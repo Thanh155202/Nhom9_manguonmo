@@ -1,40 +1,118 @@
 import numpy as np
+import tkinter as tk
+from tkinter import messagebox
 
-# Nhập số biến và số phương trình
-n = int(input("Nhập số biến (n): "))
-m = int(input("Nhập số phương trình (m): "))
+def giai_he_pttt():
+    try:
+        n = int(nhap_n.get())
+        phuong_trinh = []
+        for i in range(n):
+            pt = []
+            for j in range(n):
+                pt.append(float(nhap_bien[i][j].get()))
+            phuong_trinh.append(pt)
 
-# Nhập ma trận hệ số A
-A = np.zeros((m, n))
-print("Nhập ma trận hệ số A:")
-for i in range(m):
-    for j in range(n):
-        A[i, j] = float(input(f"A[{i+1},{j+1}]: "))
+        he_so = np.array(phuong_trinh)
+        hang_so = np.array([float(nhap_hang_so[i].get()) for i in range(n)])
 
-# Nhập vector b
-b = np.zeros(m)
-print("Nhập vector b:")
-for i in range(m):
-    b[i] = float(input(f"b[{i+1}]: "))
+        ket_qua = np.linalg.solve(he_so, hang_so)
 
-# Tính hạng của ma trận hệ số A và ma trận mở rộng
-    rank_A = np.linalg.matrix_rank(A)
-    augmented_matrix = np.column_stack((A, b))
-    rank_augmented_matrix = np.linalg.matrix_rank(augmented_matrix)
+        ket_qua_text.delete(1.0, tk.END)
+        ket_qua_text.insert(tk.END, "Nghiệm của hệ:\n")
+        for i in range(len(ket_qua)):
+            ket_qua_text.insert(tk.END, f"x{i+1} = {ket_qua[i]:.3f}\n")
+    except Exception as e:
+        messagebox.showerror("Lỗi", str(e))
 
-# Kiểm tra xem hệ có vô số nghiệm hay không
-try:
-    # Kiểm tra trường hợp ma trận A và vector kết quả B đều toàn số 0
-    if np.all(A == 0) and np.all(B == 0):
-        print("Hệ phương trình vô số nghiệm.")
-    else:
-        # Tính bậc thang của ma trận A
-        rref_A, _ = np.linalg.qr(A)
+def reset_fields():
+    nhap_n.delete(0, tk.END)
+    ket_qua_text.delete(1.0, tk.END)
+    for khung_phuong_trinh in cua_so.winfo_children():
+        if isinstance(khung_phuong_trinh, tk.Frame):
+            khung_phuong_trinh.destroy()
+    nhap_bien.clear()
+    nhap_hang_so.clear()
 
-elif rank_A == rank_augmented_matrix and rank_A == n:
-    x = np.linalg.solve(A, b)
-    print("Nghiệm của hệ phương trình:")
-    for i in range(n):
-        print(f"x{i+1} =", x[i])
-else:
-    print("Hệ phương trình vô nghiệm.")
+def xoa_truong_phuong_trinh():
+    for danh_sach_bien in nhap_bien:
+        for nhap_bien_var in danh_sach_bien:
+            nhap_bien_var.delete(0, tk.END)
+    for nhap_hang_so_var in nhap_hang_so:
+        nhap_hang_so_var.delete(0, tk.END)
+    ket_qua_text.delete(1.0, tk.END)
+
+def tao_cac_truong_phuong_trinh():
+    try:
+        ket_qua_text.delete(1.0, tk.END)
+        for khung_phuong_trinh in cua_so.winfo_children():
+            if isinstance(khung_phuong_trinh, tk.Frame):
+                khung_phuong_trinh.destroy()
+        nhap_bien.clear()
+        nhap_hang_so.clear()
+
+        n = int(nhap_n.get())
+        nhap_bien.clear()
+        nhap_hang_so.clear()
+
+        for i in range(n):
+            khung_phuong_trinh = tk.Frame(cua_so)
+            khung_phuong_trinh.pack(pady=5)
+
+            danh_sach_bien = []
+            for j in range(n):
+                bien_label = tk.Label(khung_phuong_trinh, text=f"x{j+1}:")
+                bien_label.pack(side=tk.LEFT, padx=5)
+                nhap_bien_var = tk.Entry(khung_phuong_trinh, width=5)
+                nhap_bien_var.pack(side=tk.LEFT)
+                danh_sach_bien.append(nhap_bien_var)
+
+            nhap_bien.append(danh_sach_bien)
+
+            nhan_hang_so = tk.Label(khung_phuong_trinh, text=" = ")
+            nhan_hang_so.pack(side=tk.LEFT)
+
+            nhap_hang_so_var = tk.Entry(khung_phuong_trinh, width=5)
+            nhap_hang_so_var.pack(side=tk.LEFT)
+            nhap_hang_so.append(nhap_hang_so_var)
+
+    except Exception as e:
+        messagebox.showerror("Lỗi", str(e))
+
+# Tạo cửa sổ giao diện
+cua_so = tk.Tk()
+cua_so.title("Giải Hệ Phương Trình Tuyến Tính NHÓM 9")
+cua_so.geometry("400x400")
+
+# Nhập số hệ phương trình
+nhan_tieu_de = tk.Label(cua_so, text="Giải Hệ Phương Trình Tuyến Tính")
+nhan_tieu_de.pack(pady=10)
+
+nhan_n = tk.Label(cua_so, text="Nhập số hệ phương trình (n):")
+nhan_n.pack()
+nhap_n = tk.Entry(cua_so)
+nhap_n.pack()
+
+# Tạo danh sách các biến và hằng số
+nhap_bien = []
+nhap_hang_so = []
+
+tao_button = tk.Button(cua_so, text="Tạo hệ Phương Trình", command=tao_cac_truong_phuong_trinh)
+tao_button.pack()
+
+xoa_button = tk.Button(cua_so, text="Xóa hệ Phương Trình", command=xoa_truong_phuong_trinh)
+xoa_button.pack()
+
+reset_button = tk.Button(cua_so, text="Reset hệ phương trình", command=reset_fields)
+reset_button.pack()
+
+nut_giai = tk.Button(cua_so, text="Giải Hệ phương trình", command=giai_he_pttt)
+nut_giai.pack()
+
+# Kết quả
+nhan_ket_qua = tk.Label(cua_so, text="Kết quả:")
+nhan_ket_qua.pack(pady=10)
+ket_qua_text = tk.Text(cua_so, height=5, width=30)
+ket_qua_text.pack()
+
+# Chạy chương trình
+cua_so.mainloop()
