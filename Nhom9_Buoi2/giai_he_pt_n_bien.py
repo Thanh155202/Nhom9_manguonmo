@@ -23,8 +23,14 @@ for i in range(m):
     rank_augmented_matrix = np.linalg.matrix_rank(augmented_matrix)
 
 # Kiểm tra xem hệ có vô số nghiệm hay không
-if rank_A == rank_augmented_matrix and rank_A < n:
-    print("Hệ phương trình có vô số nghiệm.")
+try:
+    # Kiểm tra trường hợp ma trận A và vector kết quả B đều toàn số 0
+    if np.all(A == 0) and np.all(B == 0):
+        print("Hệ phương trình vô số nghiệm.")
+    else:
+        # Tính bậc thang của ma trận A
+        rref_A, _ = np.linalg.qr(A)
+
 elif rank_A == rank_augmented_matrix and rank_A == n:
     x = np.linalg.solve(A, b)
     print("Nghiệm của hệ phương trình:")
