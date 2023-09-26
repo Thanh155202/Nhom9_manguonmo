@@ -1,0 +1,13 @@
+Input: 
+	+ 9 mã lớp
+	+ số SV
+	+ số SV đạt A+, A, B+, B, C+, C, D+, D, F của từng lớp
+	+ số SV đạt L1, L2 của từng lớp
+	+ số SV đạt các bài TX1, TX2, cuối kỳ của từng lớp
+Mục tiêu thiết kế:
+	+ Tổng số SV đi thi					(Sum)
+	+ Tổng số SV đạt/trượt					(Sum)
+	+ Tìm xem lớp nào có nhiều điểm A,B,C,D,... nhất	(Max/Min)
+	+ So sánh số SV đạt chuẩn L1/L2 của từng lớp		(phép so sánh)
+	+ So sánh số SV đạt bài TX1, Tx2, cuối kỳ		(phép so sánh)
+	+ Vẽ đồ thị						(plot)
