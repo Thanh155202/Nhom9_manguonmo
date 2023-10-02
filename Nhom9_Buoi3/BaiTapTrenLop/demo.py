@@ -94,7 +94,20 @@ def phodiem():
 
     plt.tight_layout()
     plt.show()
+    
+def compare_l1_l2_chart():
+    l1_counts = in_data[:, 11]
+    l2_counts = in_data[:, 12]
+    class_labels = in_data[:, 0]
 
+    plt.figure(figsize=(10, 6))
+    plt.bar(class_labels, l1_counts, width=0.4, label='L1', color='blue')
+    plt.bar(class_labels, l2_counts, width=0.4, label='L2', color='red', bottom=l1_counts)
+    plt.xlabel('lớp')
+    plt.ylabel('Số lương sinh viên')
+    plt.title('So sánh điểm L1 và L2 cho mỗi lớp')
+    plt.legend()
+    plt.show()
 
 def reset_result():
     result_text.config(state=tk.NORMAL)
@@ -110,7 +123,10 @@ window.title("Ứng dụng báo cáo")
 tongsinhvien_button = tk.Button(window, text="Tổng số SV đi thi, số SV đạt/trượt", command=tongsinhvien)
 sinhvienA_button = tk.Button(window, text="Lớp có nhiều sinh viên điểm A nhất", command=sinhvienA)
 phodiem_button = tk.Button(window, text="Phổ điểm", command=phodiem)
+compare_l1_l2_chart_button = tk.Button(window, text="So sánh số SV L1 và L2 (Biểu đồ)", command=compare_l1_l2_chart)
+
 reset_button = tk.Button(window, text="Reset", command=reset_result)
+
 
 # Create an output Text widget
 result_text = Text(window, wrap="word", height=20, width=200)
@@ -123,6 +139,11 @@ sinhvienA_button.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
 phodiem_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
 reset_button.grid(row=3, column=0, padx=10, pady=10, sticky="ew")
 result_text.grid(row=0, column=1, rowspan=7, padx=10, pady=10, sticky="nsew")
+
+
+compare_l1_l2_chart_button.grid(row=4, column=0, padx=10, pady=10, sticky="ew")
+reset_button.grid(row=5, column=0, padx=10, pady=10, sticky="ew")
+
 
 # Main loop
 window.mainloop()
