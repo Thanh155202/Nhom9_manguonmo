@@ -47,7 +47,6 @@ def tongsinhvien():
     plt.subplots_adjust(hspace=0.5)
     plt.show()
 
-
 def sinhvienA():
     diemA = in_data[:, 3]
     maxa = diemA.max()
@@ -69,7 +68,6 @@ def sinhvienA():
         plt.text(bar.get_x() + bar.get_width() / 2, height, value, ha='center', va='bottom')
 
     plt.show()
-
 
 def phodiem():
     labels = ["A", "B+", "B", "C+", "C", "D+", "D", "F"]
@@ -94,17 +92,17 @@ def phodiem():
 
     plt.tight_layout()
     plt.show()
-    
+
 def compare_l1_l2_chart():
     l1_counts = in_data[:, 11]
     l2_counts = in_data[:, 12]
-    class_labels = in_data[:, 0]
+    class_labels = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
 
     plt.figure(figsize=(10, 6))
     plt.bar(class_labels, l1_counts, width=0.4, label='L1', color='blue')
     plt.bar(class_labels, l2_counts, width=0.4, label='L2', color='red', bottom=l1_counts)
-    plt.xlabel('lớp')
-    plt.ylabel('Số lương sinh viên')
+    plt.xlabel('Lớp')
+    plt.ylabel('Số lượng sinh viên')
     plt.title('So sánh điểm L1 và L2 cho mỗi lớp')
     plt.legend()
     plt.show()
@@ -117,32 +115,39 @@ def reset_result():
 
 # Create a tkinter window
 window = tk.Tk()
-window.title("Ứng dụng báo cáo")
+window.title("Bảng báo cáo kết quả thi")
 
-# Create buttons for the remaining functionalities
-tongsinhvien_button = tk.Button(window, text="Tổng số SV đi thi, số SV đạt/trượt", command=tongsinhvien)
-sinhvienA_button = tk.Button(window, text="Lớp có nhiều sinh viên điểm A nhất", command=sinhvienA)
-phodiem_button = tk.Button(window, text="Phổ điểm", command=phodiem)
-compare_l1_l2_chart_button = tk.Button(window, text="So sánh số SV L1 và L2 (Biểu đồ)", command=compare_l1_l2_chart)
+# Create a centered title label
+title_label = tk.Label(window, text="Bảng báo cáo kết quả thi", font=("Helvetica", 16))
+title_label.grid(row=0, column=0, columnspan=2, pady=(10, 0))
 
-reset_button = tk.Button(window, text="Reset", command=reset_result)
+# Create buttons for the remaining functionalities with adjusted size and fonts
+button_width = 15
+button_font = ('Helvetica', 10)
 
+tongsinhvien_button = tk.Button(window, text="Tổng số SV đi thi", command=tongsinhvien, width=button_width, font=button_font)
+sinhvienA_button = tk.Button(window, text="Lớp có nhiều SV điểm A nhất", command=sinhvienA, width=button_width, font=button_font)
+phodiem_button = tk.Button(window, text="Phổ điểm", command=phodiem, width=button_width, font=button_font)
+compare_l1_l2_chart_button = tk.Button(window, text="So sánh điểm L1 và L2", command=compare_l1_l2_chart, width=button_width, font=button_font)
+
+reset_button = tk.Button(window, text="Reset", command=reset_result, width=button_width, font=button_font)
 
 # Create an output Text widget
 result_text = Text(window, wrap="word", height=20, width=200)
 result_text_scrollbar = Scrollbar(window, command=result_text.yview)
 result_text.config(yscrollcommand=result_text_scrollbar.set)
 
-# Place widgets on the window
-tongsinhvien_button.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
-sinhvienA_button.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
-phodiem_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
-reset_button.grid(row=3, column=0, padx=10, pady=10, sticky="ew")
-result_text.grid(row=0, column=1, rowspan=7, padx=10, pady=10, sticky="nsew")
+# Arrange buttons in a 2x2 grid
+tongsinhvien_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
+sinhvienA_button.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
+phodiem_button.grid(row=2, column=0, padx=10, pady=5, sticky="ew")
+compare_l1_l2_chart_button.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
 
+# Place the result_text widget below the buttons
+result_text.grid(row=3, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-compare_l1_l2_chart_button.grid(row=4, column=0, padx=10, pady=10, sticky="ew")
-reset_button.grid(row=5, column=0, padx=10, pady=10, sticky="ew")
+# Place the reset_button below the 2x2 grid
+reset_button.grid(row=4, column=0, columnspan=2, padx=10, pady=5, sticky="ew")
 
 
 # Main loop
