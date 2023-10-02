@@ -40,7 +40,7 @@ def tongsinhvien():
         ax1.text(i, v1/2, str(v1), ha='center', va='bottom', color='white', fontweight='bold')
         ax1.text(i, v1 + v2/2, str(v2), ha='center', va='bottom', color='white', fontweight='bold')
 
-    ax1.set_title('Biểu đồ số sinh viên đạt , trượt  của từng lớp')
+    ax1.set_title('Biểu đồ số sinh viên đạt, trượt của từng lớp')
     ax1.set_ylabel('Số sinh viên')
     ax1.legend(loc='upper right')
 
@@ -53,13 +53,13 @@ def sinhvienA():
     maxa = diemA.max()
     i = np.argmax(diemA)
     result_text.config(state=tk.NORMAL)
-    result_text.insert(END, 'Lớp có nhiều sinh viên điểm A là lớp {0} có {1} sinh viên\n'.format(in_data[i, 0], maxa))
+    result_text.insert(END, 'Lớp có nhiều sinh viên đạt điểm A nhất là lớp {0} có {1} sinh viên\n'.format(in_data[i, 0], maxa))
 
     categories1 = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
     values1 = in_data[:, 3]
 
     plt.figure(4)
-    bars = plt.bar(categories1, values1, label="Sinh viên đạt điểm A", color=custom_colors)
+    bars = plt.bar(categories1, values1, label="Lớp có nhiều sinh viên điểm A nhất", color=custom_colors)
     plt.title('Biểu đồ số sinh viên đạt điểm A của các lớp')
     plt.ylabel('Số sinh viên')
     plt.legend(loc='upper right')
@@ -107,8 +107,8 @@ window = tk.Tk()
 window.title("Ứng dụng báo cáo")
 
 # Create buttons for the remaining functionalities
-tongsinhvien_button = tk.Button(window, text="Tổng sinh viên đi thi", command=tongsinhvien)
-sinhvienA_button = tk.Button(window, text="Sinh viên đạt điểm A", command=sinhvienA)
+tongsinhvien_button = tk.Button(window, text="Tổng số SV đi thi, số SV đạt/trượt", command=tongsinhvien)
+sinhvienA_button = tk.Button(window, text="Lớp có nhiều sinh viên điểm A nhất", command=sinhvienA)
 phodiem_button = tk.Button(window, text="Phổ điểm", command=phodiem)
 reset_button = tk.Button(window, text="Reset", command=reset_result)
 
