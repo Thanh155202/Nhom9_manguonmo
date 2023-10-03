@@ -35,7 +35,7 @@ def tongsv():
 
     fig, ax1 = plt.subplots(figsize=(8, 18))
 
-    ax1.bar(ds_lop, values1, color='green', label="Sinh viên đạt")
+    ax1.bar(ds_lop, values1, color='blue', label="Sinh viên đạt")
     ax1.bar(ds_lop, values2, bottom=values1, color='red', label="Sinh viên trượt")
 
     for i, (v1, v2) in enumerate(zip(values1, values2)):
@@ -94,17 +94,38 @@ def phodiem():
     plt.tight_layout()
     plt.show()
 
-#so sánh L1 L2 của từng lớp
-def sosanh_L1_L2():
-    l1_counts = in_data[:, 11]
-    l2_counts = in_data[:, 12]
-  
+# số sv đạt chuẩn  L1 L2 của từng lớp
+def svdat_L1_L2():
+    # Tính toán số lượng sv đạt chuẩn
+    l2 = in_data[:, 1] - in_data[:, 10] - in_data[:, 9] - in_data[:, 8]  # L2 = số sv - F - D - D+
+    SVD = in_data[:, 9] + in_data[:, 8]  # số sv đạt D + (D+)
+    SVF = in_data[:, 10]  # số sv đạt F
+
     plt.figure(figsize=(10, 6))
-    plt.bar(ds_lop, l1_counts, width=0.4, label='L1', color='blue')
-    plt.bar(ds_lop, l2_counts, width=0.4, label='L2', color='red', bottom=l1_counts)
+
+    # tạo biểu đồ cột
+    bars = plt.bar(ds_lop, l2, width=0.4, label='Số sinh viên đạt L2', color='blue')
+    plt.bar(ds_lop, SVD, width=0.4, label='Số sinh viên đạt D và D+', color='red', bottom=l2)
+    plt.bar(ds_lop, SVF, width=0.4, label='Số sinh viên đạt F', color='green', bottom=l2 + SVD)
+
+    # Thêm chỉ số
+    for i, bar in enumerate(bars):
+        l2_count = l2[i]
+        l3_count = SVD[i]
+        l4_count = SVF[i]
+
+        plt.text(bar.get_x() + bar.get_width() / 2, l2_count / 2, str(l2_count), ha='center', va='bottom', color='white', fontweight='bold')
+        plt.text(bar.get_x() + bar.get_width() / 2, l2_count + l3_count / 2, str(l3_count), ha='center', va='bottom', color='white', fontweight='bold')
+        plt.text(bar.get_x() + bar.get_width() / 2, l2_count + l3_count + l4_count / 2, str(l4_count), ha='center', va='bottom', color='white', fontweight='bold')
+
+    # thêm tổng sv
+    for i, bar in enumerate(bars):
+        total_count = l2[i] + SVD[i] + SVF[i]
+        plt.text(bar.get_x() + bar.get_width() / 2, total_count + 2, str(total_count), ha='center', va='bottom', color='black')
+
     plt.xlabel('Lớp')
     plt.ylabel('Số lượng sinh viên')
-    plt.title('So sánh điểm L1 và L2 cho mỗi lớp')
+    plt.title('SỐ SINH VIÊN ĐẠT CHUẨN')
     plt.legend()
     plt.show()
 
@@ -131,7 +152,7 @@ button_font = ('Arial', 15)
 tongsv_button = tk.Button(window, text="TỔNG SỐ SINH VIÊN DỰ THI", command=tongsv, width=button_width, font=button_font)
 svdatA_button = tk.Button(window, text="LỚP CÓ NHIỀU SV ĐẠT A NHẤT", command=svdatA, width=button_width, font=button_font)
 phodiem_button = tk.Button(window, text="PHỔ ĐIỂM CỦA 9 LỚP", command=phodiem, width=button_width, font=button_font)
-sosanh_L1_L2_button = tk.Button(window, text="SO SÁNH ĐẠT CHUẨN L1/L2 ", command=sosanh_L1_L2, width=button_width, font=button_font)
+svdat_L1_L2_button = tk.Button(window, text="SINH VIÊN ĐẠT CHUẨN L1/L2 ", command=svdat_L1_L2, width=button_width, font=button_font)
 
 reset_button = tk.Button(window, text="RESET", command=reset, width=button_width, font=button_font)
 
@@ -144,7 +165,7 @@ result_text.config(yscrollcommand=result_text_scrollbar.set)
 tongsv_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
 svdatA_button.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
 phodiem_button.grid(row=2, column=0, padx=10, pady=5, sticky="ew")
-sosanh_L1_L2_button.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+svdat_L1_L2_button.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
 
 # Đặt widget hiển thị kết quả
 result_text.grid(row=3, column=0, columnspan=2, padx=10, pady=10, sticky="nsew") # Mở rộng và lấp đầy ô lưới 
