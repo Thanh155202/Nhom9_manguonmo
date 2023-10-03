@@ -48,3 +48,45 @@ def daoham():
     except Exception as e:
         daoham_result_label.config(text="Error: " + str(e))
 
+# Tạo cửa sổ Tkinter GUI
+root = tk.Tk()
+root.title("ỨNG DỤNG MÔN GIẢI TÍCH")
+
+# Tạo cửa sổ co mỗi nhiệm vụ
+tab_control = ttk.Notebook(root)
+tichphan_tab = ttk.Frame(tab_control)
+gioihan_tab = ttk.Frame(tab_control)
+daoham_tab = ttk.Frame(tab_control)
+
+tab_control.add(tichphan_tab, text="Tích phân")
+tab_control.add(gioihan_tab, text="Giới hạn")
+tab_control.add(daoham_tab, text="Đạo hàm")
+tab_control.pack(expand=1, fill="both")
+
+# Cửa sổ tích phân
+bieuthuc_label = ttk.Label(tichphan_tab, text="Nhập Biểu Thức:")
+bieuthuc_label.grid(row=0, column=0)
+bieuthuc_entry = ttk.Entry(tichphan_tab)
+bieuthuc_entry.grid(row=0, column=1)
+
+bien_label = ttk.Label(tichphan_tab, text="Biến:")
+bien_label.grid(row=1, column=0)
+bien_entry = ttk.Entry(tichphan_tab)
+bien_entry.grid(row=1, column=1)
+
+gh_tren_label = ttk.Label(tichphan_tab, text="Giới hạn dưới:")
+gh_tren_label.grid(row=2, column=0)
+gh_tren_entry = ttk.Entry(tichphan_tab)
+gh_tren_entry.grid(row=2, column=1)
+
+gh_duoi_label = ttk.Label(tichphan_tab, text="Giới hạn trên:")
+gh_duoi_label.grid(row=3, column=0)
+gh_duoi_entry = ttk.Entry(tichphan_tab)
+gh_duoi_entry.grid(row=3, column=1)
+
+tichphan_button = ttk.Button(tichphan_tab, text="Tính Tích Phân", command=tichphan)
+tichphan_button.grid(row=4, columnspan=2)
+
+kq_tichphan = ttk.Label(tichphan_tab, text="")
+kq_tichphan.grid(row=5, columnspan=2)
+
