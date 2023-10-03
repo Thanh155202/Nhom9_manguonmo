@@ -7,6 +7,7 @@ Input:
 Mục tiêu thiết kế:
 	+ Tổng số SV đi thi					(Sum)
 	+ Tổng số SV đạt/trượt					(Sum)
+        + Tỷ lệ phần trăm số sv đạt /số sv trượt so với tổng sv đi thi
 	+ Tìm xem lớp nào có nhiều điểm A nhất			(Max/Min)
-	+ So sánh sinh viên L1 và L2 của các lớp (biểu đồ)
+	+ So sánh sinh viên L1 và L2 của các lớp                (biểu đồ)
 	+ Vẽ đồ thị						(plot)
