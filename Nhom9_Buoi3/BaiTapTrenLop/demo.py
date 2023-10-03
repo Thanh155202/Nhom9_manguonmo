@@ -4,16 +4,19 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-# Create a custom color palette
-custom_colors = ['#FF5733', '#33FF57', '#33AFFF', '#AFFF33', '#FF33AF', '#33FFAF', '#FF5733', '#AFAF33']
-
-# Create a custom font
-custom_font = ('Helvetica', 12)
-
 df = pd.read_csv('diemPython.csv', index_col=0, header=0)
 in_data = np.array(df)
 
-def tongsinhvien():
+# Tạo bảng màu
+bang_mau = ['#FF5733', '#33FF57', '#3377FF', '#FFFF33', '#FF33AF', '#33FFAF', '#AA55FF', '#00CC66']
+
+# Danh sách lớp
+ds_lop = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
+
+# Thiết lập các chức năng trong báo cáo
+
+# Tổng số sinh viên khop tính số sinh viên đạt và thi trượt , tính tỷ lệ
+def tongsv():
     sv = in_data[:, 1]
     tongsv = np.sum(sv)
     result_text.insert(END, "Tổng số sinh viên đi thi: " + str(tongsv) + " sinh viên\n")
@@ -22,19 +25,18 @@ def tongsinhvien():
     tongsvtruot = np.sum(svtruot)
     tongsvdat = tongsv - tongsvtruot
 
-    percent_dat = round((tongsvdat / tongsv) * 100, 2)
-    percent_truot = round((tongsvtruot / tongsv) * 100, 2)
+    tyle_dat = round((tongsvdat / tongsv) * 100, 2)
+    tyle_truot = round((tongsvtruot / tongsv) * 100, 2)
 
-    result_text.insert(END, "Tổng số sinh viên qua môn: " + str(tongsvdat) + " sinh viên (" + str(percent_dat) + "%)\n")
-    result_text.insert(END, "Tổng số sinh viên trượt môn: " + str(tongsvtruot) + " sinh viên (" + str(percent_truot) + "%)\n\n")
-    categories = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
+    result_text.insert(END, "Tổng số sinh viên qua môn: " + str(tongsvdat) + " sinh viên (" + str(tyle_dat) + "%)\n")
+    result_text.insert(END, "Tổng số sinh viên trượt môn: " + str(tongsvtruot) + " sinh viên (" + str(tyle_truot) + "%)\n\n")
     values1 = np.sum(in_data[0:9, 2:10], axis=1).flatten()
     values2 = in_data[:, 10]
 
     fig, ax1 = plt.subplots(figsize=(8, 18))
 
-    ax1.bar(categories, values1, color='green', label="Sinh viên đạt")
-    ax1.bar(categories, values2, bottom=values1, color='red', label="Sinh viên trượt")
+    ax1.bar(ds_lop, values1, color='green', label="Sinh viên đạt")
+    ax1.bar(ds_lop, values2, bottom=values1, color='red', label="Sinh viên trượt")
 
     for i, (v1, v2) in enumerate(zip(values1, values2)):
         ax1.text(i, v1/2, str(v1), ha='center', va='bottom', color='white', fontweight='bold')
@@ -47,18 +49,17 @@ def tongsinhvien():
     plt.subplots_adjust(hspace=0.5)
     plt.show()
 
-def sinhvienA():
+# Số sinh viên đạt điểm A 
+def svdatA():
     diemA = in_data[:, 3]
     maxa = diemA.max()
     i = np.argmax(diemA)
     result_text.config(state=tk.NORMAL)
     result_text.insert(END, 'Lớp có nhiều sinh viên đạt điểm A nhất là lớp {0} có {1} sinh viên\n'.format(in_data[i, 0], maxa))
-
-    categories1 = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
     values1 = in_data[:, 3]
 
     plt.figure(4)
-    bars = plt.bar(categories1, values1, label="Lớp có nhiều sinh viên điểm A nhất", color=custom_colors)
+    bars = plt.bar(ds_lop, values1, label="Lớp có nhiều sinh viên điểm A nhất", color=bang_mau)
     plt.title('Biểu đồ số sinh viên đạt điểm A của các lớp')
     plt.ylabel('Số sinh viên')
     plt.legend(loc='upper right')
@@ -69,86 +70,87 @@ def sinhvienA():
 
     plt.show()
 
+# Tính Phổ điểm 
 def phodiem():
     labels = ["A", "B+", "B", "C+", "C", "D+", "D", "F"]
     diems = in_data[:, 3:11]
-    total_students = diems.shape[0]
-    grade_counts = diems.sum(axis=0)
+    tong_cacdiem = diems.sum(axis=0)
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
 
-    # Bar chart
-    ax1.bar(labels, grade_counts, color=custom_colors)
-    ax1.set_xlabel('Điểm')
-    ax1.set_ylabel('Số lượng sinh viên')
-    ax1.set_title('Phổ điểm')
-    for i, v in enumerate(grade_counts):
-        ax1.annotate(str(v), (i, v), ha='center', va='bottom')
+    # Vẽ biểu đồ tròn
+    ax1.pie(tong_cacdiem, labels=labels, autopct='%1.1f%%', colors=bang_mau)
+    ax1.axis('equal')
+    ax1.set_title('Phổ điểm ')
 
-    # Pie chart
-    ax2.pie(grade_counts, labels=labels, autopct='%1.1f%%', colors=custom_colors)
-    ax2.axis('equal')
+    # Vẽ Biểu đồ cột
+    ax2.bar(labels, tong_cacdiem, color=bang_mau)
+    ax2.set_xlabel('Điểm')
+    ax2.set_ylabel('Số lượng sinh viên')
     ax2.set_title('Phổ điểm')
+    for i, v in enumerate(tong_cacdiem):
+        ax2.annotate(str(v), (i, v), ha='center', va='bottom')
 
     plt.tight_layout()
     plt.show()
 
-def compare_l1_l2_chart():
+#so sánh L1 L2 của từng lớp
+def sosanh_L1_L2():
     l1_counts = in_data[:, 11]
     l2_counts = in_data[:, 12]
-    class_labels = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5', 'Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9']
-
+  
     plt.figure(figsize=(10, 6))
-    plt.bar(class_labels, l1_counts, width=0.4, label='L1', color='blue')
-    plt.bar(class_labels, l2_counts, width=0.4, label='L2', color='red', bottom=l1_counts)
+    plt.bar(ds_lop, l1_counts, width=0.4, label='L1', color='blue')
+    plt.bar(ds_lop, l2_counts, width=0.4, label='L2', color='red', bottom=l1_counts)
     plt.xlabel('Lớp')
     plt.ylabel('Số lượng sinh viên')
     plt.title('So sánh điểm L1 và L2 cho mỗi lớp')
     plt.legend()
     plt.show()
 
-def reset_result():
+# Reset kết quả
+def reset():
     result_text.config(state=tk.NORMAL)
     result_text.delete(1.0, END)
     plt.close('all')
     result_text.config(state=tk.DISABLED)
 
-# Create a tkinter window
+# Tạo cửa sổ giao diện window
 window = tk.Tk()
-window.title("Bảng báo cáo kết quả thi")
+window.title("BÁO CÁO KẾT QUẢ THI")
 
-# Create a centered title label
-title_label = tk.Label(window, text="Bảng báo cáo kết quả thi", font=("Helvetica", 16))
-title_label.grid(row=0, column=0, columnspan=2, pady=(10, 0))
+# Tạo tiêu đề
+# Tạo tiêu đề
+tieude = tk.Label(window, text="BÁO CÁO KẾT QUẢ THI", font=("Helvetica", 24), fg="red")
+tieude.grid(row=0, column=0, columnspan=2, pady=(10, 0))
 
-# Create buttons for the remaining functionalities with adjusted size and fonts
-button_width = 15
-button_font = ('Helvetica', 10)
+# Thiết lập kích thước , phông chữ cho nút nhấn
+button_width = 10
+button_font = ('Arial', 15)
 
-tongsinhvien_button = tk.Button(window, text="Tổng số SV đi thi", command=tongsinhvien, width=button_width, font=button_font)
-sinhvienA_button = tk.Button(window, text="Lớp có nhiều SV điểm A nhất", command=sinhvienA, width=button_width, font=button_font)
-phodiem_button = tk.Button(window, text="Phổ điểm", command=phodiem, width=button_width, font=button_font)
-compare_l1_l2_chart_button = tk.Button(window, text="So sánh điểm L1 và L2", command=compare_l1_l2_chart, width=button_width, font=button_font)
+tongsv_button = tk.Button(window, text="TỔNG SỐ SINH VIÊN DỰ THI", command=tongsv, width=button_width, font=button_font)
+svdatA_button = tk.Button(window, text="LỚP CÓ NHIỀU SV ĐẠT A NHẤT", command=svdatA, width=button_width, font=button_font)
+phodiem_button = tk.Button(window, text="PHỔ ĐIỂM CỦA 9 LỚP", command=phodiem, width=button_width, font=button_font)
+sosanh_L1_L2_button = tk.Button(window, text="SO SÁNH ĐẠT CHUẨN L1/L2 ", command=sosanh_L1_L2, width=button_width, font=button_font)
 
-reset_button = tk.Button(window, text="Reset", command=reset_result, width=button_width, font=button_font)
+reset_button = tk.Button(window, text="RESET", command=reset, width=button_width, font=button_font)
 
-# Create an output Text widget
+# Thiết lập kết quả hiển thị
 result_text = Text(window, wrap="word", height=20, width=200)
 result_text_scrollbar = Scrollbar(window, command=result_text.yview)
 result_text.config(yscrollcommand=result_text_scrollbar.set)
 
-# Arrange buttons in a 2x2 grid
-tongsinhvien_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
-sinhvienA_button.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
+# Thiết lập thông số cho button
+tongsv_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
+svdatA_button.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
 phodiem_button.grid(row=2, column=0, padx=10, pady=5, sticky="ew")
-compare_l1_l2_chart_button.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+sosanh_L1_L2_button.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
 
-# Place the result_text widget below the buttons
-result_text.grid(row=3, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+# Đặt widget hiển thị kết quả
+result_text.grid(row=3, column=0, columnspan=2, padx=10, pady=10, sticky="nsew") # Mở rộng và lấp đầy ô lưới 
 
-# Place the reset_button below the 2x2 grid
+# Thiết lập button reset
 reset_button.grid(row=4, column=0, columnspan=2, padx=10, pady=5, sticky="ew")
 
-
-# Main loop
+# chạy
 window.mainloop()
