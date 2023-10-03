@@ -23,3 +23,28 @@ def tichphan():
     except Exception as e:
         kq_tichphan.config(text="Lỗi: " + str(e))
 
+#Hàm tính giới hạn
+def gioihan():
+    bieuthuc = gioihan_bieuthuc_entry.get()
+    bien = gioihan_bien_entry.get()
+    diem_gh = float(diem_gh_entry.get())
+
+    x = sym.symbols(bien)
+    try:
+        result = sym.limit(bieuthuc, x, diem_gh)
+        kq_gioihan.config(text="Giới hạn tại điểm {}: {}".format(diem_gh, result))
+    except Exception as e:
+        kq_gioihan.config(text="Lỗi: " + str(e))
+
+# Hàm tính đạo hàm
+def daoham():
+    bieuthuc = daoham_bieuthuc_entry.get()
+    bien = daoham_bien_entry.get()
+
+    x = sym.symbols(bien)
+    try:
+        result = sym.diff(bieuthuc, x)
+        daoham_result_label.config(text="Kết quả đạo hàm: " + str(result))
+    except Exception as e:
+        daoham_result_label.config(text="Error: " + str(e))
+
