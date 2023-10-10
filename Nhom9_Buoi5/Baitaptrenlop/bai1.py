@@ -25,3 +25,10 @@ model = tf.keras.Sequential([
 
 # Biên dịch mô hình với hàm mất mát MSE và trình tối ưu
 model.compile(optimizer='adam', loss='mean_squared_error')
+
+# Huấn luyện mô hình
+model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_test, y_test))
+
+# Đánh giá mô hình trên tập kiểm tra
+loss = model.evaluate(X_test, y_test)
+print(f'Mean Squared Error on Test Data: {loss}')
