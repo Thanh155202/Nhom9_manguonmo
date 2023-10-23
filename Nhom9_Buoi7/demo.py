@@ -62,7 +62,7 @@ while True:
     cv2.putText(frame, f'So khuon mat : {face_count}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
     # Hiển thị video đầu ra
-    cv2.imshow('Nhận diện khuon mat', frame)
+    cv2.imshow('Nhan dien khuon mat', frame)
 
     # Đặt biến `face_saved` lại thành False để cho phép lưu ảnh cho khuôn mặt tiếp theo
     if face_saved and len(faces) == 0:
