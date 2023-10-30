@@ -7,9 +7,8 @@ import tkinter as tk
 
 
 root = tk.Tk()
-root.title("Ứng dụng nhận diện khuôn mặt")
-root.geometry("800x450")  
-
+root.title("Ứng dụng nhận dang khuôn mặt")
+root.geometry("800x450")
 hinhnen = tk.PhotoImage(file="b.png")
 
 # tao tieu de
@@ -84,11 +83,11 @@ def mo_thumuc():
 def thoat():
     root.destroy()
 
-title_label = tk.Label(root, text="ỨND DỤNG NHẬN DIỆN KHUÔN MẶT", font=("Comic Sans MS", 25))
+title_label = tk.Label(root, text="ỨNG DỤNG NHẬN DẠNG KHUÔN MẶT", font=("Comic Sans MS", 25))
 title_label.grid(row=0, column=0, columnspan=3, pady=20)  # Place the title label in a single row
 
 
-start_button = tk.Button(root, text="Bắt đầu nhận diện", command=batdaunhandien,bg="green",fg="white",font=("Comic Sans MS", 20))
+start_button = tk.Button(root, text="Bắt đầu nhận dạng", command=batdaunhandien,bg="green",fg="white",font=("Comic Sans MS", 20))
 open_folder_button = tk.Button(root, text="Mở thư mục ảnh", command=mo_thumuc,bg="lavender", font=("Comic Sans MS", 20))
 exit_button = tk.Button(root, text="Thoát chương trình", command=thoat,bg="red",fg="white", font=("Comic Sans MS", 20))
 
