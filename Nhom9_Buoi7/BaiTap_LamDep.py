@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tkinter as tk
 from tkinter import filedialog
+
+
 def process_image():
     # Load the image
     file_path = filedialog.askopenfilename()
@@ -17,6 +19,32 @@ def process_image():
     gamma = float(_gamma.get())
     lookup_table = np.array([((i / 255.0) ** gamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
     gamma_corrected_image = cv2.LUT(brightness_image, lookup_table)
+
+    # Display the original and enhanced images using Matplotlib
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
+    plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+    plt.title('ảnh gốc')
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(cv2.cvtColor(gamma_corrected_image, cv2.COLOR_BGR2RGB))
+    plt.title('ảnh đã chỉnh')
+
+    plt.show()
+
+
+# Create a simple Tkinter GUI
+root = tk.Tk()
+root.title('Image Enhancement')
+root.geometry('400x200')
+
+
+
+# Nhãn và thanh trượt cho tỉ lệ x
+_gamma = tk.Label(root, text="Độ sáng:")
+_gamma.pack()
+_gamma = tk.Scale(root, from_=0, to=10, resolution=0.01, orient="horizontal")
+_gamma.pack()
 
 # Nhãn và thanh trượt cho tỉ lệ x
 _beta = tk.Label(root, text="Độ mịn:")

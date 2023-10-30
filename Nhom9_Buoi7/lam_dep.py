@@ -20,9 +20,6 @@ def process_image():
     lookup_table = np.array([((i / 255.0) ** gamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
     gamma_corrected_image = cv2.LUT(brightness_image, lookup_table)
 
-    # Save the enhanced image
-    cv2.imwrite('final_image.jpg', gamma_corrected_image)
-
     # Display the original and enhanced images using Matplotlib
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
@@ -38,10 +35,10 @@ def process_image():
 
 # Create a simple Tkinter GUI
 root = tk.Tk()
-root.title('Image Enhancement')
+root.title('Chỉnh ảnh')
 root.geometry('400x200')
 
-process_button = tk.Button(root, text='Process Image', command=process_image)
+process_button = tk.Button(root, text='Chọn ảnh', command=process_image)
 process_button.pack()
 
 root.mainloop()
